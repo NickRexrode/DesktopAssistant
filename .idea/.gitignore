@@ -1,0 +1,22 @@
+# Gradle
+build/
+.gradle/
+gradle.properties
+
+# IntelliJ
+.idea/
+*.iml
+out
+
+# Eclipse
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
