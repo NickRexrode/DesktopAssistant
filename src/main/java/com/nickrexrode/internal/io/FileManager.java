@@ -23,6 +23,7 @@ public final class FileManager implements State {
     public static final String APPLICATION_DIRECTORY = HOME_DIRECTORY + File.separator + "applications";
     public static final String CONFIG_DIRECTORY = HOME_DIRECTORY + File.separator + "config";
     public static final String SCRIPT_DIRECTORY = HOME_DIRECTORY + File.separator + "scripts";
+    public static final String IMAGE_DIRECTORY = HOME_DIRECTORY + File.separator+"images";
 
 
     public FileManager() {
@@ -54,6 +55,9 @@ public final class FileManager implements State {
         }
         if (!folderExists(SCRIPT_DIRECTORY)) {
             this.makeFolder(SCRIPT_DIRECTORY);
+        }
+        if (!folderExists(IMAGE_DIRECTORY)) {
+            this.makeFolder(IMAGE_DIRECTORY);
         }
 
 
