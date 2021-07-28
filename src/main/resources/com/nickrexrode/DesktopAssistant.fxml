@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Text?>
 
 <?import com.nickrexrode.gui.ViewPanel?>
-<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
     <children>
         <Button fx:id="closeButton" alignment="CENTER" contentDisplay="CENTER" layoutX="570.0" mnemonicParsing="false" onAction="#handleCloseButtonClicked" prefHeight="30.0" prefWidth="30.0" text="X" />
         <Button fx:id="minimizeButton" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="540.0" mnemonicParsing="false" onAction="#handleMinimizeButtonClick" prefHeight="30.0" prefWidth="30.0" text="-" />
