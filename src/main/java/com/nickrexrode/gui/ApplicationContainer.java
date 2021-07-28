@@ -1,11 +1,14 @@
 package com.nickrexrode.gui;
 
+import com.nickrexrode.DesktopAssistant;
 import com.nickrexrode.external.Application;
 import com.nickrexrode.internal.base.State;
-import javafx.beans.NamedArg;
+
+import com.nickrexrode.internal.io.FileManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
+
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -13,10 +16,7 @@ import javafx.scene.paint.Color;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
-import java.util.ResourceBundle;
+
 
 public class ApplicationContainer extends AnchorPane implements State {
 
@@ -47,6 +47,18 @@ public class ApplicationContainer extends AnchorPane implements State {
 
 
         this.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.DASHED, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
+
+        String imageLocation;
+        if (this.application.getThumbnailLocation().equals("default")) {
+            imageLocation = getClass().getResource("defaultApplicationContainerImage.png").toString();
+        } else {
+            imageLocation = FileManager.HOME_DIRECTORY+File.separator+application.getThumbnailLocation();
+            File file = new File(imageLocation);
+            imageLocation = file.toURI().toString();
+        }
+
+        imageView.setImage(new Image(imageLocation));
         imageView.setOnMouseClicked(event -> {
             this.application.execute();
         });
@@ -54,19 +66,10 @@ public class ApplicationContainer extends AnchorPane implements State {
 
     }
 
-    @FXML
-    public void initialize() {
-
-    }
 
     public ApplicationContainer setApplication(Application application) {
         this.application = application;
         return this;
-    }
-
-    @FXML
-    public void handleImageViewMouseClick(MouseEvent mouseEvent) {
-        System.out.println("Clicked");
     }
 
     public Application getApplication() {
