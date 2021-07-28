@@ -53,7 +53,6 @@ public final class ViewPanel extends HBox implements State {
         ApplicationManager applicationManager = ApplicationManager.getInstance();
 
         List<Application> applications = applicationManager.getAllApplications();
-        System.out.println(applications.size());
         for (int i = 0; i < applications.size(); i++) {
             this.applicationContainers.add(new ApplicationContainer(applications.get(i)));
         }
