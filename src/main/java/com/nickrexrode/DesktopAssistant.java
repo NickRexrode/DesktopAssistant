@@ -1,17 +1,26 @@
 package com.nickrexrode;
 
 
+import com.nickrexrode.config.ConfigManager;
 import com.nickrexrode.gui.ViewPanel;
+import com.nickrexrode.gui.loader.LoaderSplashScreen;
 import com.nickrexrode.internal.BasicLoadedApplication;
 import com.nickrexrode.internal.application.ApplicationManager;
 import com.nickrexrode.internal.base.State;
 import com.nickrexrode.internal.io.FileManager;
+import com.nickrexrode.logging.Logger;
+import com.nickrexrode.web.RequestManager;
+import com.nickrexrode.web.TestClassData;
+import com.nickrexrode.web.request.Request;
+import com.nickrexrode.web.request.TestRequest;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
@@ -24,8 +33,9 @@ import javafx.stage.StageStyle;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ResourceBundle;
 
-public final class DesktopAssistant extends Application implements State {
+public final class DesktopAssistant extends Application implements State{
     @FXML
     private Button minimizeButton;
     @FXML
@@ -42,8 +52,10 @@ public final class DesktopAssistant extends Application implements State {
     private ViewPanel viewSelectorBox;
 
 
-    private double xOffset = 0;
-    private double yOffset = 0;
+    private Stage primaryStage;
+
+    public double xOffset = 0;
+    public double yOffset = 0;
 
     public static void main(String[] args) {
 
@@ -52,22 +64,29 @@ public final class DesktopAssistant extends Application implements State {
 
     }
 
+    public Stage getPrimaryStage() {
+        return this.primaryStage;
+    }
+
 
 
 
     @Override
     public void start(Stage primaryStage) throws IOException {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("DesktopAssistant.fxml"));
-        loader.setController(this);
+        //PreLoading
+        this.primaryStage = primaryStage;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("gui/loader/Loader.fxml"));
         AnchorPane root = loader.load();
-        Scene scene = new Scene(root);
 
+        ((LoaderSplashScreen) loader.getController()).setInstance(this);
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
 
         primaryStage.initStyle(StageStyle.UNDECORATED);
-        primaryStage.setScene(scene);
-        primaryStage.show();
 
+
+        //Loading
         root.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -82,7 +101,8 @@ public final class DesktopAssistant extends Application implements State {
                 primaryStage.setY(event.getScreenY() - yOffset);
             }
         });
-        this.load();
+
+        primaryStage.show();
 
 
     }
@@ -106,13 +126,18 @@ public final class DesktopAssistant extends Application implements State {
         stage.setIconified(true);
         save();
 
+
     }
 
     @Override
     public boolean load() {
+//        Logger.loading("Loading Desktop Assistant");
         FileManager.getInstance();
-        ApplicationManager.getInstance();
 
+        ConfigManager.getInstance();
+
+        ApplicationManager.getInstance();
+        RequestManager.getInstance();
         return true;
     }
 
@@ -126,6 +151,9 @@ public final class DesktopAssistant extends Application implements State {
 
     @Override
     public boolean save() {
+        ConfigManager.getInstance().save();
         return true;
     }
+
+
 }
