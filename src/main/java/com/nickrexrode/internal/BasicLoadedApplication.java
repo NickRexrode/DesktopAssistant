@@ -2,26 +2,28 @@ package com.nickrexrode.internal;
 
 import com.nickrexrode.DesktopAssistant;
 import com.nickrexrode.config.ApplicationConfig;
+import com.nickrexrode.config.Config;
 import com.nickrexrode.config.ConfigManager;
+import com.nickrexrode.exception.config.ConfigNotFoundException;
 import com.nickrexrode.external.Application;
 import com.nickrexrode.internal.base.State;
+import com.nickrexrode.internal.io.FileManager;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public final class BasicLoadedApplication extends Application implements State {
 
-    private ApplicationConfig config;
+    private Config config;
     private List<String> commands;
 
     public BasicLoadedApplication(String name, String thumbnailLocation, List<String> commands) {
         super(name, thumbnailLocation);
         this.commands = commands;
+        load();
     }
 
 
@@ -33,9 +35,43 @@ public final class BasicLoadedApplication extends Application implements State {
         }
     }
 
+
+    private boolean createDefaultConfigFile(File f) {
+        Yaml yaml = new Yaml();
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("application", this.name);
+
+        boolean created= false;
+        FileWriter writer = null;
+
+        try {
+            created = f.createNewFile();
+            writer = new FileWriter(f);
+        } catch (IOException e) {
+            e.printStackTrace();
+            created = false;
+        }
+        String str = yaml.dump(map).replace("{", "").replace("}", "");
+        System.out.println(str);
+        try {
+            writer.write(str);
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return created;
+    }
     @Override
     public boolean load() {
-        this.config = ConfigManager.getInstance().getConfig(this.name);
+
+        try {
+            this.config = ConfigManager.getInstance().getConfig(this.name);
+        } catch (ConfigNotFoundException e) {
+            createDefaultConfigFile(new File(FileManager.CONFIG_DIRECTORY+File.separator+this.name+"Default"+".yml"));
+        }
+
         return true;
     }
 
