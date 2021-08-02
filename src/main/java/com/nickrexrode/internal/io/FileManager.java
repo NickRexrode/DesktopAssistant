@@ -3,6 +3,7 @@ package com.nickrexrode.internal.io;
 
 import com.nickrexrode.config.ConfigManager;
 import com.nickrexrode.internal.base.State;
+import com.nickrexrode.logging.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,27 +26,28 @@ public final class FileManager implements State {
     public static final String SCRIPT_DIRECTORY = HOME_DIRECTORY + File.separator + "scripts";
     public static final String IMAGE_DIRECTORY = HOME_DIRECTORY + File.separator+"images";
 
-
-    public FileManager() {
-
-
-        this.load();
-    }
-
     public static FileManager getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new FileManager();
         }
         return FileManager.INSTANCE;
     }
+    public FileManager() {
+
+
+        this.load();
+    }
+
+
 
     @Override
     public boolean load() {
+        Logger.loading("Loading files");
         if (!folderExists(HOME_DIRECTORY)) {
             this.makeFolder(HOME_DIRECTORY);
         }
 
-        //Check applications, scripts, and config folders exist
+        //Check applications, scripts, config, and images folders exist
 
         if (!folderExists(APPLICATION_DIRECTORY)) {
             this.makeFolder(APPLICATION_DIRECTORY);
@@ -74,6 +76,7 @@ public final class FileManager implements State {
 
 
     public boolean makeFolder(String dir) {
+        Logger.loading("Created new file");
         File file = new File(dir);
         return file.mkdir();
     }
@@ -92,11 +95,11 @@ public final class FileManager implements State {
 
     @Override
     public boolean shutdown() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean save() {
-        return false;
+        return true;
     }
 }
