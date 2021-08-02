@@ -62,8 +62,7 @@ repositories {
 //    }
 //}
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
 //    implementation group: 'edu.cmu.sphinx', name: 'sphinx4-core', version:'5prealpha-SNAPSHOT'
 //    implementation group: 'edu.cmu.sphinx', name: 'sphinx4-data', version:'5prealpha-SNAPSHOT'
 //    compile group: 'org.jvoicexml', name: 'cmu_us_kal', version: '1.2.3-SNAPSHOT'
@@ -77,9 +76,20 @@ dependencies {
 //    implementation('org.controlsfx:controlsfx:11.0.3') {
 //        exclude group: 'org.openjfx'
 //    }
+//    implementation 'org.hamcrest.hamcrest-all:1.1'
 
+//    def withExcludes = {
+//        exclude group: 'org.hamcrest', module: 'hamcrest.core'
+//    }
 
-    implementation 'org.yaml:snakeyaml:1.29'
+   // compile "org.hamcrest:hamcrest-core:2.1"
+//    compile 'com.googlecode.json-simple:json-simple:1.1.1', withExcludes
+//     {
+//        exclude group: "org.hamcrest", module: 'hamcrest.core'
+//    }
+    //implementation(group: "com.googlecode.json-simple", name: "json-simple", version: "1.1.1")
+    implementation 'com.google.code.gson:gson:2.8.7'
+    implementation( 'org.yaml:snakeyaml:1.29')
 }
 
 application {
