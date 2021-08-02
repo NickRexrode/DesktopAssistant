@@ -3,6 +3,7 @@ package com.nickrexrode.internal.application;
 import com.nickrexrode.external.Application;
 import com.nickrexrode.internal.base.State;
 import com.nickrexrode.internal.io.FileManager;
+import com.nickrexrode.logging.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -43,9 +44,11 @@ public final class ApplicationManager implements State {
     @Override
     public boolean load() {
 
+        Logger.loading("Loading script applications");
         List<File> scriptFiles = FileManager.getAllFilesInDirectory(FileManager.SCRIPT_DIRECTORY);
 
         for (int i = 0; i < scriptFiles.size(); i++) {
+            Logger.loading("Loading script applications ("+(i+1)+"/"+scriptFiles.size()+")");
             Application application = ApplicationFactory.loadApplication(scriptFiles.get(i));
             scriptApplications.add(application);
         }
