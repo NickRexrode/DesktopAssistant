@@ -1,11 +1,15 @@
 package com.nickrexrode.config;
 
-import com.nickrexrode.exception.ConfigNotFoundException;
+import com.nickrexrode.exception.config.ConfigNotFoundException;
 import com.nickrexrode.external.Application;
 import com.nickrexrode.internal.base.State;
+import com.nickrexrode.internal.io.FileManager;
+import com.nickrexrode.logging.Logger;
 
-import java.io.ObjectInputFilter;
+import java.io.File;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 public final class ConfigManager implements State {
 
@@ -17,11 +21,16 @@ public final class ConfigManager implements State {
         return INSTANCE;
     }
 
-    private HashMap<String, ApplicationConfig> configs;
+    private HashMap<String, Config> configs;
 
-    public ApplicationConfig getConfig(String name) {
+    public ConfigManager() {
+        this.configs = new HashMap<>();
+        this.load();
+    }
+    public Config getConfig(String name) {
 
-        ApplicationConfig config = configs.get(name);
+
+        Config config = configs.get(name.toLowerCase());
 
         if (config == null) {
             throw new ConfigNotFoundException();
@@ -30,30 +39,56 @@ public final class ConfigManager implements State {
         return config;
     }
 
-    public ApplicationConfig getConfig(Application application) {
+    public Config getConfig(Application application) {
 
-        ApplicationConfig config = configs.get(application.getName());
+        Config config = configs.get(application.getName().toLowerCase());
 
         if (config == null) {
             throw new ConfigNotFoundException();
         }
         return config;
+    }
+
+    public boolean addConfig(Config config) {
+
+        try {
+            this.configs.put(config.getPluginName().toLowerCase(), config);
+        } catch(NullPointerException e) {
+            return false;
+        }
+
+        return true;
+
     }
 
 
 
     @Override
     public boolean load() {
-        return false;
+        System.out.println("Config Loaded");
+        Logger.loading("Loading configurations");
+        List<File> files = FileManager.getAllFilesInDirectory(FileManager.CONFIG_DIRECTORY);
+
+        for (int i = 0; i < files.size();i++) {
+            Logger.loading("Loading configuations ("+(i+1)+"/"+files.size()+")");
+            File file = files.get(i);
+            Config config = ConfigFactory.loadConfiguration(file);
+            this.configs.put(config.getPluginName().toLowerCase(), config);
+        }
+        return true;
     }
 
     @Override
     public boolean shutdown() {
-        return false;
+        this.save();
+        return true;
     }
 
     @Override
     public boolean save() {
-        return false;
+        this.configs.forEach((name, config) -> {
+            config.save();
+        });
+        return true;
     }
 }
