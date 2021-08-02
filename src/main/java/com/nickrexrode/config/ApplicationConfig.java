@@ -1,18 +1,21 @@
 package com.nickrexrode.config;
 
-import com.nickrexrode.internal.base.State;
+import com.nickrexrode.exception.config.ConfigNotFoundException;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
 
-public final class ApplicationConfig implements State {
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Map;
 
-    private String pluginName;
-
-    public ApplicationConfig(String pluginName) {
-        this.pluginName = pluginName;
+public final class ApplicationConfig extends Config{
+    private File file;
+    public ApplicationConfig(String pluginName, Map<String, Object> data, File file) {
+        super(pluginName, data);
+        this.file = file;
     }
 
-    public String getPluginName() {
-        return this.pluginName;
-    }
     @Override
     public boolean load() {
         return false;
@@ -20,11 +23,36 @@ public final class ApplicationConfig implements State {
 
     @Override
     public boolean shutdown() {
-        return false;
+        save();
+        return true;
     }
 
     @Override
     public boolean save() {
-        return false;
+        DumperOptions options = new DumperOptions();
+        options.setIndent(2);
+        options.setPrettyFlow(true);
+        options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+        Yaml yaml = new Yaml(options);
+        FileWriter writer;
+        try {
+
+            writer = new FileWriter(file);
+        } catch (IOException e) {
+            throw new ConfigNotFoundException();
+        }
+
+        String str = yaml.dump(data);
+
+
+        try {
+            writer.write(str);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return true;
     }
 }
