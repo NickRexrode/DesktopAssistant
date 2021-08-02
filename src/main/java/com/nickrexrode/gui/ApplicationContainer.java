@@ -1,6 +1,9 @@
 package com.nickrexrode.gui;
 
 import com.nickrexrode.DesktopAssistant;
+import com.nickrexrode.config.ConfigManager;
+import com.nickrexrode.exception.config.ConfigKeyNotFoundException;
+import com.nickrexrode.exception.config.ConfigNotFoundException;
 import com.nickrexrode.external.Application;
 import com.nickrexrode.internal.base.State;
 
@@ -28,40 +31,20 @@ public class ApplicationContainer extends AnchorPane implements State {
     public ApplicationContainer(Application application) {
         this.application = application;
 
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("ApplicationContainer.fxml"));
+        loader.setRoot(this);
+        loader.setController(this);
+
         try {
-
-            FXMLLoader loader = new FXMLLoader();
-
-            loader.setLocation(getClass().getResource("ApplicationContainer.fxml"));
-
-            loader.setRoot(this);
-
-            loader.setController(this);
-
             loader.load();
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
 
 
-        this.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.DASHED, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
-
-        String imageLocation;
-        if (this.application.getThumbnailLocation().equals("default")) {
-            imageLocation = getClass().getResource("defaultApplicationContainerImage.png").toString();
-        } else {
-            imageLocation = FileManager.HOME_DIRECTORY+File.separator+application.getThumbnailLocation();
-            File file = new File(imageLocation);
-            imageLocation = file.toURI().toString();
-        }
-
-        imageView.setImage(new Image(imageLocation));
-        imageView.setOnMouseClicked(event -> {
-            this.application.execute();
-        });
+        this.load();
 
 
     }
@@ -79,7 +62,31 @@ public class ApplicationContainer extends AnchorPane implements State {
 
     @Override
     public boolean load() {
-        return false;
+        String imageLocation;
+        if (this.application.getThumbnailLocation().equals("default")) {
+            imageLocation = getClass().getResource("defaultApplicationContainerImage.png").toString();
+        } else {
+            imageLocation = new File(FileManager.HOME_DIRECTORY+File.separator+application.getThumbnailLocation()).toURI().toString();
+        }
+
+        imageView.setImage(new Image(imageLocation));
+        imageView.setOnMouseClicked(event -> {
+            this.application.execute();
+
+        });
+
+        try {
+            String colorString = (String) ConfigManager.getInstance().getConfig(this.application.getName()).get("color");
+            this.setBorder(new Border((new BorderStroke(Color.web(colorString), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT))));
+        } catch(ConfigKeyNotFoundException e) {
+            this.setBorder(new Border((new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT))));
+        }
+
+
+        return true;
+
+
+
     }
 
     @Override
