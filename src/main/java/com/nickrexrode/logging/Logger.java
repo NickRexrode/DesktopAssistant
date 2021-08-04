@@ -3,8 +3,6 @@ package com.nickrexrode.logging;
 import com.nickrexrode.internal.base.State;
 import com.nickrexrode.loader.LoadingBarQueue;
 
-
-//Probably make singleton class
 public final class Logger implements State {
     private static Logger INSTANCE;
 
@@ -47,7 +45,6 @@ public final class Logger implements State {
     @Override
     public boolean load() {
         this.queue = LoadingBarQueue.getInstance();
-
         return true;
     }
 

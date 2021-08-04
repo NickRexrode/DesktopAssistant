@@ -15,7 +15,6 @@ public final class ViewPanel extends HBox implements State {
     private int startDisplayNumber;
 
     public ViewPanel() {
-
         this.applicationContainers = new ArrayList<>();
         this.setPrefSize(500,200);
         this.setMaxSize(500,200);
@@ -43,20 +42,17 @@ public final class ViewPanel extends HBox implements State {
 
     public void update() {
         this.getChildren().clear();
-
         this.getChildren().addAll(applicationContainers.subList(startDisplayNumber, startDisplayNumber+3));
-
     }
 
     @Override
     public boolean load() {
         ApplicationManager applicationManager = ApplicationManager.getInstance();
-
         List<Application> applications = applicationManager.getAllApplications();
+
         for (int i = 0; i < applications.size(); i++) {
             this.applicationContainers.add(new ApplicationContainer(applications.get(i)));
         }
-
         update();
         return true;
     }

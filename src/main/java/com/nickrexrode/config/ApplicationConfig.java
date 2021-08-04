@@ -3,14 +3,15 @@ package com.nickrexrode.config;
 import com.nickrexrode.exception.config.ConfigNotFoundException;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
 
 public final class ApplicationConfig extends Config{
-    private File file;
+
+    private final File file;
+
     public ApplicationConfig(String pluginName, Map<String, Object> data, File file) {
         super(pluginName, data);
         this.file = file;
@@ -36,14 +37,12 @@ public final class ApplicationConfig extends Config{
         Yaml yaml = new Yaml(options);
         FileWriter writer;
         try {
-
             writer = new FileWriter(file);
         } catch (IOException e) {
             throw new ConfigNotFoundException();
         }
 
         String str = yaml.dump(data);
-
 
         try {
             writer.write(str);

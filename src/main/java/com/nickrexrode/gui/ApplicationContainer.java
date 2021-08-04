@@ -1,32 +1,24 @@
 package com.nickrexrode.gui;
 
-import com.nickrexrode.DesktopAssistant;
 import com.nickrexrode.config.ConfigManager;
 import com.nickrexrode.exception.config.ConfigKeyNotFoundException;
-import com.nickrexrode.exception.config.ConfigNotFoundException;
 import com.nickrexrode.external.Application;
 import com.nickrexrode.internal.base.State;
-
 import com.nickrexrode.internal.io.FileManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-
 import java.io.File;
 import java.io.IOException;
-
 
 public class ApplicationContainer extends AnchorPane implements State {
 
     private Application application;
     @FXML
     private ImageView imageView;
-
 
     public ApplicationContainer(Application application) {
         this.application = application;
@@ -41,12 +33,7 @@ public class ApplicationContainer extends AnchorPane implements State {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-
         this.load();
-
-
     }
 
 

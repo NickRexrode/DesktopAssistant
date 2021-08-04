@@ -9,7 +9,6 @@ import com.nickrexrode.external.Application;
 import com.nickrexrode.internal.base.State;
 import com.nickrexrode.internal.io.FileManager;
 import org.yaml.snakeyaml.Yaml;
-
 import java.io.*;
 import java.util.HashMap;
 import java.util.List;
@@ -38,10 +37,9 @@ public final class BasicLoadedApplication extends Application implements State {
 
     private boolean createDefaultConfigFile(File f) {
         Yaml yaml = new Yaml();
-
         Map<String, Object> map = new HashMap<>();
-        map.put("application", this.name);
 
+        map.put("application", this.name);
         boolean created= false;
         FileWriter writer = null;
 
@@ -52,8 +50,9 @@ public final class BasicLoadedApplication extends Application implements State {
             e.printStackTrace();
             created = false;
         }
+
         String str = yaml.dump(map).replace("{", "").replace("}", "");
-        System.out.println(str);
+
         try {
             writer.write(str);
             writer.flush();
@@ -65,13 +64,11 @@ public final class BasicLoadedApplication extends Application implements State {
     }
     @Override
     public boolean load() {
-
         try {
             this.config = ConfigManager.getInstance().getConfig(this.name);
         } catch (ConfigNotFoundException e) {
             createDefaultConfigFile(new File(FileManager.CONFIG_DIRECTORY+File.separator+this.name+"Default"+".yml"));
         }
-
         return true;
     }
 

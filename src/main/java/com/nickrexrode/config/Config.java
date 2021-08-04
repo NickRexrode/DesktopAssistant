@@ -2,14 +2,13 @@ package com.nickrexrode.config;
 
 import com.nickrexrode.exception.config.ConfigKeyNotFoundException;
 import com.nickrexrode.internal.base.State;
-
 import java.util.Map;
 
 public abstract class Config implements State {
 
     protected String pluginName;
-
     protected Map<String, Object> data;
+
     public Config(String pluginName, Map<String, Object> data) {
         this.pluginName = pluginName;
         this.data = data;
@@ -21,12 +20,15 @@ public abstract class Config implements State {
 
     public Object get(String key) {
         Object obj =this.data.get(key);
-
         if (obj == null) {
             throw new ConfigKeyNotFoundException();
         }
         return obj;
 
+    }
+
+    public void set(String key, Object value) {
+        this.data.replace(key, value);
     }
     @Override
     public abstract boolean load();

@@ -1,17 +1,12 @@
 package com.nickrexrode.web;
 
-
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.nickrexrode.exception.web.ResponseParseException;
-import com.nickrexrode.internal.base.State;
 import com.nickrexrode.web.request.Request;
 import com.nickrexrode.web.response.Response;
-
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.stream.Collectors;
@@ -24,10 +19,6 @@ public final class RequestManager {
             INSTANCE = new RequestManager();
         }
         return INSTANCE;
-    }
-
-    public RequestManager() {
-
     }
 
 
@@ -50,6 +41,7 @@ public final class RequestManager {
         if (jsonObject == null) {
             throw new NullPointerException("JSON was null");
         }
+
 
 
         return res.from(jsonObject);

@@ -17,9 +17,7 @@ import java.util.stream.Stream;
 
 public final class FileManager implements State {
 
-
     private static FileManager INSTANCE;
-
     public static final String HOME_DIRECTORY = System.getProperty("user.home") + File.separator + "DesktopAssistant";
     public static final String APPLICATION_DIRECTORY = HOME_DIRECTORY + File.separator + "applications";
     public static final String CONFIG_DIRECTORY = HOME_DIRECTORY + File.separator + "config";
@@ -33,12 +31,8 @@ public final class FileManager implements State {
         return FileManager.INSTANCE;
     }
     public FileManager() {
-
-
         this.load();
     }
-
-
 
     @Override
     public boolean load() {
@@ -62,9 +56,7 @@ public final class FileManager implements State {
             this.makeFolder(IMAGE_DIRECTORY);
         }
 
-
         return true;
-
 
         //Combine Classpaths
     }

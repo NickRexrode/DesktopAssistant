@@ -1,29 +1,16 @@
 package com.nickrexrode.loader;
 
-import com.nickrexrode.DesktopAssistant;
 import com.nickrexrode.config.Config;
 import com.nickrexrode.config.ConfigFactory;
 import com.nickrexrode.config.ConfigManager;
-import com.nickrexrode.exception.config.ConfigNotFoundException;
+import com.nickrexrode.gui.loader.LoaderSplashScreen;
 import com.nickrexrode.internal.base.State;
 import com.nickrexrode.internal.io.FileManager;
-import javafx.scene.control.ProgressBar;
-
 import java.io.File;
-import java.net.URISyntaxException;
-import java.nio.file.FileSystem;
-import java.nio.file.Paths;
 
 public final class LoadingBarQueue extends CustomQueueADT<String> implements State {
 
-
-
-
     private static LoadingBarQueue INSTANCE;
-
-    private int count;
-    private int lastCount;
-    private ProgressBar progressBar;
     public static LoadingBarQueue getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new LoadingBarQueue();
@@ -31,54 +18,41 @@ public final class LoadingBarQueue extends CustomQueueADT<String> implements Sta
         return INSTANCE;
     }
 
-    //temp
-
-    public int getLastCount() {
-        return this.lastCount;
-    }
-
-
+    private int count;
+    private int lastCount;
+    private LoaderSplashScreen loaderController;
 
     public LoadingBarQueue() {
         this.count = 0;
         this.lastCount = 0;
         this.load();
     }
-    public void setLoadingBar(ProgressBar progressBar) {
-        this.progressBar = progressBar;
+
+    public int getLastCount() {
+        return this.lastCount;
     }
 
-    private void display() {
-        String str = this.pop();
+    public void setLoaderController(LoaderSplashScreen loaderSplashScreen) {
+        this.loaderController = loaderSplashScreen;
+    }
 
-        progressBar.setProgress(count);
+    private void display(String str) {
+        loaderController.setProgressBarStatus((double) count/lastCount);
+        loaderController.setText(str);
         count++;
-        //TODO: adjust text
-        //adjust text
-
     }
 
     public void push(String str) {
         super.push(str);
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.display();
+        this.display(super.pop());
     }
-
 
     @Override
     public boolean load() {
-
-
-        System.out.println("Loading bar Loaded");
+        //Preload config before ConfigManager is loaded
         File file = new File(FileManager.CONFIG_DIRECTORY+File.separator+"loaderStorage.yml");
-
         Config config = ConfigFactory.loadConfiguration(file);
         this.lastCount = (Integer) config.get("count");
-
         return true;
     }
 
@@ -91,6 +65,7 @@ public final class LoadingBarQueue extends CustomQueueADT<String> implements Sta
     @Override
     public boolean save() {
         Config config = ConfigManager.getInstance().getConfig("loaderStorage");
+        config.set("count", this.count);
         config.save();
         return true;
     }

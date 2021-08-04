@@ -3,7 +3,6 @@ package com.nickrexrode.internal.application;
 import com.nickrexrode.external.Application;
 import com.nickrexrode.internal.BasicLoadedApplication;
 import org.yaml.snakeyaml.Yaml;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -20,11 +19,11 @@ public final class ApplicationFactory {
             e.printStackTrace();
         }
 
-
         String name = (String) map.get("name");
         String thumbnailLocation = (String) map.get("thumbnailLocation");
         List<String> commands = (List<String>) (map.get("commands"));
         return new BasicLoadedApplication(name, thumbnailLocation, commands);
 
     }
+
 }

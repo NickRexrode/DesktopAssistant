@@ -94,6 +94,6 @@ dependencies {
 
 application {
     mainModule = 'com.nickrexrode.DesktopAssistant'
-    mainClass = 'com.nickrexrode.DesktopAssistant'
+    mainClass = 'com.nickrexrode.Loader'
 }
 

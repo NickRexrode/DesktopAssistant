@@ -1,8 +1,5 @@
 package com.nickrexrode.external;
 
-import com.nickrexrode.internal.application.ApplicationManager;
-import com.nickrexrode.internal.base.State;
-
 import java.io.IOException;
 
 public abstract class Application implements Comparable<Application> {
@@ -23,20 +20,14 @@ public abstract class Application implements Comparable<Application> {
         return this.thumbnailLocation;
     }
 
-
     public abstract void execute();
-
 
     @Override
     public boolean equals(Object other) {
-
         if (!(other instanceof Application)) {
             return false;
         }
-
         Application o = (Application) other;
-
-
         return this.name.equals(o.getName());
 
     }
@@ -47,9 +38,6 @@ public abstract class Application implements Comparable<Application> {
     }
 
     public boolean runTerminalCommand(String command) {
-
-        String[] args = command.split(" ");
-
         try {
             Process process = Runtime.getRuntime().exec(command);
             process.waitFor();

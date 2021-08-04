@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.nickrexrode.web.TestClassData;
 
-import java.util.List;
-
 public class TestResponse extends Response<TestClassData> {
 
     /**
