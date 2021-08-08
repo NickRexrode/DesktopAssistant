@@ -10,6 +10,7 @@ module com.nickrexrode.DesktopAssistant {
     opens com.nickrexrode to javafx.fxml;
     opens com.nickrexrode.gui to javafx.fxml;
     opens com.nickrexrode.gui.loader to javafx.fxml;
+    exports com.nickrexrode.external;
     exports com.nickrexrode;
 
 }

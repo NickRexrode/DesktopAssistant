@@ -28,6 +28,7 @@ public final class ConfigManager implements State {
     public Config getConfig(String name) {
         Config config = configs.get(name.toLowerCase());
         if (config == null) {
+            System.out.println(name);
             throw new ConfigNotFoundException();
         }
         return config;
@@ -36,6 +37,7 @@ public final class ConfigManager implements State {
     public Config getConfig(Application application) {
         Config config = configs.get(application.getName().toLowerCase());
         if (config == null) {
+            System.out.println(application.getName());
             throw new ConfigNotFoundException();
         }
         return config;

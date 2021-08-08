@@ -2,16 +2,25 @@ package com.nickrexrode.internal.io;
 
 
 import com.nickrexrode.config.ConfigManager;
+import com.nickrexrode.external.Application;
 import com.nickrexrode.internal.base.State;
 import com.nickrexrode.logging.Logger;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,7 +31,8 @@ public final class FileManager implements State {
     public static final String APPLICATION_DIRECTORY = HOME_DIRECTORY + File.separator + "applications";
     public static final String CONFIG_DIRECTORY = HOME_DIRECTORY + File.separator + "config";
     public static final String SCRIPT_DIRECTORY = HOME_DIRECTORY + File.separator + "scripts";
-    public static final String IMAGE_DIRECTORY = HOME_DIRECTORY + File.separator+"images";
+    public static final String IMAGE_DIRECTORY = HOME_DIRECTORY + File.separator + "images";
+
 
     public static FileManager getInstance() {
         if (INSTANCE == null) {
@@ -30,6 +40,7 @@ public final class FileManager implements State {
         }
         return FileManager.INSTANCE;
     }
+
     public FileManager() {
         this.load();
     }
@@ -56,9 +67,12 @@ public final class FileManager implements State {
             this.makeFolder(IMAGE_DIRECTORY);
         }
 
+
+
+
         return true;
 
-        //Combine Classpaths
+
     }
 
     public boolean folderExists(String dir) {

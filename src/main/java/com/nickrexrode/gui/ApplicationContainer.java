@@ -3,6 +3,7 @@ package com.nickrexrode.gui;
 import com.nickrexrode.config.ConfigManager;
 import com.nickrexrode.exception.config.ConfigKeyNotFoundException;
 import com.nickrexrode.external.Application;
+import com.nickrexrode.external.CustomApplication;
 import com.nickrexrode.internal.base.State;
 import com.nickrexrode.internal.io.FileManager;
 import javafx.fxml.FXML;
@@ -13,6 +14,9 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class ApplicationContainer extends AnchorPane implements State {
 
@@ -49,14 +53,21 @@ public class ApplicationContainer extends AnchorPane implements State {
 
     @Override
     public boolean load() {
-        String imageLocation;
+        String imageLocation =getClass().getResource("defaultApplicationContainerImage.png").toString();
         if (this.application.getThumbnailLocation().equals("default")) {
             imageLocation = getClass().getResource("defaultApplicationContainerImage.png").toString();
-        } else {
+        } else if(this.application instanceof CustomApplication) {
+            imageLocation = this.application.getThumbnailLocation();
+        }
+        else {
             imageLocation = new File(FileManager.HOME_DIRECTORY+File.separator+application.getThumbnailLocation()).toURI().toString();
         }
 
-        imageView.setImage(new Image(imageLocation));
+        try {
+            imageView.setImage(new Image(new URI(imageLocation).toString()));
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
         imageView.setOnMouseClicked(event -> {
             this.application.execute();
 

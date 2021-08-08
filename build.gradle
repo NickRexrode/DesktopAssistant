@@ -3,9 +3,38 @@ plugins {
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.9'
     id 'org.beryx.jlink' version '2.21.1'
+    id("maven-publish")
 
 }
 
+def githubProperties = new Properties()
+githubProperties.load(new FileInputStream(rootProject.file("github.properties")))
+
+
+afterEvaluate { project ->
+    publishing {
+        repositories {
+            maven {
+                name="DesktopAssistant"
+                println(githubProperties['grp.user'])
+                println(githubProperties['grp.key'])
+                url = uri("https://maven.pkg.github.com/nickrexrode/desktopassistant")
+                credentials {
+                    username = githubProperties['grp.user'] ?: System.getenv("GITHUB_USERNAME")
+                    password = githubProperties['grp.key'] ?: System.getenv("GITHUB_TOKEN")
+                }
+            }
+        }
+        publications {
+            gpr(MavenPublication) {
+                groupId = 'com.nickrexrode'
+                artifactId = 'desktopassistant'
+                version = '0.1.1'
+                from(components.java)
+            }
+        }
+    }
+}
 sourceCompatibility = "11"
 targetCompatibility = "11"
 
@@ -51,6 +80,9 @@ repositories {
     maven {
         url "https://oss.sonatype.org/content/repositories/snapshots"
     }
+    maven {
+        url =uri("https://jitpack.io")
+    }
     jcenter()
 }
 //jar {
@@ -82,14 +114,24 @@ dependencies {
 //        exclude group: 'org.hamcrest', module: 'hamcrest.core'
 //    }
 
-   // compile "org.hamcrest:hamcrest-core:2.1"
+    // compile "org.hamcrest:hamcrest-core:2.1"
 //    compile 'com.googlecode.json-simple:json-simple:1.1.1', withExcludes
 //     {
 //        exclude group: "org.hamcrest", module: 'hamcrest.core'
 //    }
     //implementation(group: "com.googlecode.json-simple", name: "json-simple", version: "1.1.1")
     implementation 'com.google.code.gson:gson:2.8.7'
-    implementation( 'org.yaml:snakeyaml:1.29')
+    implementation('org.yaml:snakeyaml:1.29')
+}
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example',
+                'Implementation-Version': "1",
+                'Main-Class': 'com.nickrexrode.Loader'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }
 
 application {
