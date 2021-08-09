@@ -1,6 +1,7 @@
 package com.nickrexrode.config;
 
-import com.nickrexrode.exception.config.ConfigNotFoundException;
+import com.nickrexrode.config.base.Config;
+import com.nickrexrode.exceptions.config.ConfigNotFoundException;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import java.io.File;
@@ -8,7 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
 
-public final class ApplicationConfig extends Config{
+public final class ApplicationConfig extends Config {
 
     private final File file;
 

@@ -1,11 +1,11 @@
 package com.nickrexrode.loader;
 
-import com.nickrexrode.config.Config;
+import com.nickrexrode.config.base.Config;
 import com.nickrexrode.config.ConfigFactory;
 import com.nickrexrode.config.ConfigManager;
 import com.nickrexrode.gui.loader.LoaderSplashScreen;
-import com.nickrexrode.internal.base.State;
-import com.nickrexrode.internal.io.FileManager;
+import com.nickrexrode.base.State;
+import com.nickrexrode.io.FileManager;
 import java.io.File;
 
 public final class LoadingBarQueue extends CustomQueueADT<String> implements State {

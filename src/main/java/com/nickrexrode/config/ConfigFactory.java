@@ -1,6 +1,6 @@
 package com.nickrexrode.config;
 
-import com.nickrexrode.exception.config.ConfigNotFoundException;
+import com.nickrexrode.exceptions.config.ConfigNotFoundException;
 import org.yaml.snakeyaml.Yaml;
 import java.io.File;
 import java.io.FileInputStream;

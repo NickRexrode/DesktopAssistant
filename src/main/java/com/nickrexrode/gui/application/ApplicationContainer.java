@@ -1,11 +1,11 @@
-package com.nickrexrode.gui;
+package com.nickrexrode.gui.application;
 
 import com.nickrexrode.config.ConfigManager;
-import com.nickrexrode.exception.config.ConfigKeyNotFoundException;
-import com.nickrexrode.external.Application;
-import com.nickrexrode.external.CustomApplication;
-import com.nickrexrode.internal.base.State;
-import com.nickrexrode.internal.io.FileManager;
+import com.nickrexrode.exceptions.config.ConfigKeyNotFoundException;
+import com.nickrexrode.application.base.Application;
+import com.nickrexrode.application.CustomApplication;
+import com.nickrexrode.base.State;
+import com.nickrexrode.io.FileManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
@@ -14,7 +14,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 

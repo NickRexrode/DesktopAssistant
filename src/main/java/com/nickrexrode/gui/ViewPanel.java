@@ -1,8 +1,9 @@
 package com.nickrexrode.gui;
 
-import com.nickrexrode.external.Application;
-import com.nickrexrode.internal.application.ApplicationManager;
-import com.nickrexrode.internal.base.State;
+import com.nickrexrode.application.base.Application;
+import com.nickrexrode.gui.application.ApplicationContainer;
+import com.nickrexrode.application.ApplicationManager;
+import com.nickrexrode.base.State;
 import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;

@@ -1,6 +1,6 @@
 package com.nickrexrode.logging;
 
-import com.nickrexrode.internal.base.State;
+import com.nickrexrode.base.State;
 import com.nickrexrode.loader.LoadingBarQueue;
 
 public final class Logger implements State {

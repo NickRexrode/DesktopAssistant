@@ -2,9 +2,9 @@ package com.nickrexrode;
 
 import com.nickrexrode.config.ConfigManager;
 import com.nickrexrode.gui.ViewPanel;
-import com.nickrexrode.internal.application.ApplicationManager;
-import com.nickrexrode.internal.base.State;
-import com.nickrexrode.internal.io.FileManager;
+import com.nickrexrode.application.ApplicationManager;
+import com.nickrexrode.base.State;
+import com.nickrexrode.io.FileManager;
 import com.nickrexrode.loader.LoadingBarQueue;
 import com.nickrexrode.web.RequestManager;
 import javafx.application.Platform;

@@ -1,9 +1,10 @@
 package com.nickrexrode.config;
 
-import com.nickrexrode.exception.config.ConfigNotFoundException;
-import com.nickrexrode.external.Application;
-import com.nickrexrode.internal.base.State;
-import com.nickrexrode.internal.io.FileManager;
+import com.nickrexrode.config.base.Config;
+import com.nickrexrode.exceptions.config.ConfigNotFoundException;
+import com.nickrexrode.application.base.Application;
+import com.nickrexrode.base.State;
+import com.nickrexrode.io.FileManager;
 import com.nickrexrode.logging.Logger;
 import java.io.File;
 import java.util.HashMap;
@@ -34,6 +35,7 @@ public final class ConfigManager implements State {
         return config;
     }
 
+
     public Config getConfig(Application application) {
         Config config = configs.get(application.getName().toLowerCase());
         if (config == null) {
@@ -56,13 +58,16 @@ public final class ConfigManager implements State {
 
     @Override
     public boolean load() {
+        this.configs.clear();
         Logger.loading("Loading configurations");
+
         List<File> files = FileManager.getAllFilesInDirectory(FileManager.CONFIG_DIRECTORY);
 
         for (int i = 0; i < files.size();i++) {
             Logger.loading("Loading configurations ("+(i+1)+"/"+files.size()+")");
             File file = files.get(i);
             Config config = ConfigFactory.loadConfiguration(file);
+            System.out.println(config.getPluginName().toLowerCase());
             this.configs.put(config.getPluginName().toLowerCase(), config);
         }
         return true;

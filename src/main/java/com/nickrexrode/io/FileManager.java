@@ -1,26 +1,16 @@
-package com.nickrexrode.internal.io;
+package com.nickrexrode.io;
 
 
-import com.nickrexrode.config.ConfigManager;
-import com.nickrexrode.external.Application;
-import com.nickrexrode.internal.base.State;
+import com.nickrexrode.base.State;
 import com.nickrexrode.logging.Logger;
-import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 

@@ -1,15 +1,14 @@
-package com.nickrexrode.internal.application;
+package com.nickrexrode.application;
 
-import com.nickrexrode.external.Application;
-import com.nickrexrode.internal.base.State;
-import com.nickrexrode.internal.io.FileManager;
+import com.nickrexrode.application.base.Application;
+import com.nickrexrode.application.loader.ApplicationClassLoader;
+import com.nickrexrode.base.State;
+import com.nickrexrode.io.FileManager;
 import com.nickrexrode.logging.Logger;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +58,7 @@ public final class ApplicationManager implements State {
 
         for (int i = 0; i < scriptFiles.size(); i++) {
             Logger.loading("Loading script applications (" + (i + 1) + "/" + scriptFiles.size() + ")");
-            Application application = ApplicationFactory.loadApplication(scriptFiles.get(i));
+            Application application = ApplicationClassLoader.loadApplication(scriptFiles.get(i));
             scriptApplications.add(application);
         }
 
@@ -92,14 +91,16 @@ public final class ApplicationManager implements State {
                 Map<String, Object> map = yaml.load(jarFile.getInputStream(entry));
                 String main = map.get("main").toString();
 
-                CustomApplicationClassLoader classLoader = new CustomApplicationClassLoader(jarFiles.get(i), this.getClass().getClassLoader());
+                ApplicationClassLoader classLoader = new ApplicationClassLoader(jarFiles.get(i), this.getClass().getClassLoader());
 
                 Class<?> jarClazz = classLoader.loadClass(main);
 
-                Class<? extends Application> clazz = jarClazz.asSubclass(Application.class);
+                Class<? extends CustomApplication> clazz = jarClazz.asSubclass(CustomApplication.class);
 
 
-                this.customApplications.add(clazz.newInstance());
+                Application application = clazz.newInstance();
+                application.load();
+                this.customApplications.add(application);
 
             } catch (IOException | ClassNotFoundException | IllegalAccessException | InstantiationException e) {
                 e.printStackTrace();
@@ -111,11 +112,12 @@ public final class ApplicationManager implements State {
 
     @Override
     public boolean shutdown() {
-        return false;
+        return save();
     }
 
     @Override
     public boolean save() {
-        return false;
+        this.getAllApplications().forEach((State::save));
+        return true;
     }
 }

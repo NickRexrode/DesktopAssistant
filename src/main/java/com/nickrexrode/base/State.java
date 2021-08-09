@@ -1,4 +1,4 @@
-package com.nickrexrode.internal.base;
+package com.nickrexrode.base;
 
 public interface State {
     boolean load();

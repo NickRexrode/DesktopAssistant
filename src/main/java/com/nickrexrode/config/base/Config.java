@@ -1,7 +1,7 @@
-package com.nickrexrode.config;
+package com.nickrexrode.config.base;
 
-import com.nickrexrode.exception.config.ConfigKeyNotFoundException;
-import com.nickrexrode.internal.base.State;
+import com.nickrexrode.exceptions.config.ConfigKeyNotFoundException;
+import com.nickrexrode.base.State;
 import java.util.Map;
 
 public abstract class Config implements State {
